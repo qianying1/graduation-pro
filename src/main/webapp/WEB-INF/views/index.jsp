@@ -7,6 +7,6 @@
 <title>首页</title>
 </head>
 <body>
-	<a href="dispatcher/userIndex">test dispatcher</a>
+	<a href="${pageContext.request.contextPath }/dispatcher/beginningGrab">开始抓取页面</a>
 </body>
 </html>

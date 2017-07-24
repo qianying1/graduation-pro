@@ -1,7 +1,5 @@
 package cn.qianying.graduation.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +16,14 @@ public class DispatcherController {
 	@Autowired
 	private GrabingService grabingServiceImpl;
 	@RequestMapping(value="/userIndex")
-	public String goUserIndex(Map<String, Object> params){
+	public String goUserIndex(){
 		
-		List<String> param=new ArrayList<String>();
-		param.add("helloworld!");
-		param.add("textjewk");
-		param.add("djfjskjf");
-		param.add("hrdsrdsgr");
-		params.put("testMap",param);
+		return PageMapper.INDEX;
+	}
+	
+	@RequestMapping(value="/beginningGrab")
+	public String doGrabWebsites(Map<String, Object> params){
+		
 		params.put("webpage", grabingServiceImpl.grabAWebPage("http://www.youku.com/"));
 		return PageMapper.SHOW_ANALIZE;
 	}

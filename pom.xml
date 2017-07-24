@@ -48,6 +48,7 @@
 		<asm.version>4.2</asm.version>
 		<cglib.version>3.1</cglib.version>
 		<aopalliance.version>1.0</aopalliance.version>
+		<jsoup.version>1.7.2</jsoup.version>
 	</properties>
 
 	<build>
@@ -274,6 +275,13 @@
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0.version}</version>
+		</dependency>
+		
+		<!-- jsoup依赖库 -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
 		</dependency>
 	</dependencies>
 </project>

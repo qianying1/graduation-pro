@@ -1,14 +1,45 @@
 package cn.qianying.graduation.service.impl;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cn.qianying.graduation.domain.AnalizedMessage;
+import cn.qianying.graduation.mapper.AnalizedMessageMapper;
 import cn.qianying.graduation.service.GrabingService;
 import cn.qianying.graduation.util.GrabWebsiteUtil;
 
 @Service("grabingServiceImpl")
 public class GrabingServiceImpl implements GrabingService {
+
+	@Resource
+	AnalizedMessageMapper analizedMessageMapper;
+	
+	@Override
+	public List<AnalizedMessage> listAll() {
+		return analizedMessageMapper.listAll();
+	}
+
+
+	@Override
+	public int addRecord(AnalizedMessage analizedMessage) {
+		return analizedMessageMapper.addRecord(analizedMessage);
+	}
+
+
+	@Override
+	public int saveOrUpdate(AnalizedMessage analizedMessage) {
+		return analizedMessageMapper.saveOrUpdate(analizedMessage);
+	}
+
+
+	@Override
+	public AnalizedMessage getDetail(String id) {
+		return analizedMessageMapper.getDetail(id);
+	}
 
 	@Override
 	public String grabAWebPage(String url) {
@@ -23,5 +54,6 @@ public class GrabingServiceImpl implements GrabingService {
 		}
 		return webpageContent;
 	}
+
 
 }
