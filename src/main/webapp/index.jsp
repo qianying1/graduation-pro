@@ -24,7 +24,7 @@
 	<div class="text-center" style="margin-top: 10%; margin-left: 30%;">
 		<h4>正在加载</h4>
 	</div>
-	<script src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			window.location = "dispatcher/userIndex";

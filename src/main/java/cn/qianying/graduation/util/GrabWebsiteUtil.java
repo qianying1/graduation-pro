@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class GrabWebsiteUtil {
 
@@ -16,6 +19,11 @@ public class GrabWebsiteUtil {
 	 * 要分析的网页
 	 */
 	private String htmlUrl;
+	
+	/**
+	 * 
+	 */
+	private List<String> baseUrls;
 	
 	/**
 	 * 分析结果
@@ -39,31 +47,9 @@ public class GrabWebsiteUtil {
 	 */
 	public String getWebpage() throws IOException {
 
-		StringBuffer buffstr=new StringBuffer();
-		URL url = new URL(this.htmlUrl);
-		URLConnection connection = url.openConnection();
-		HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
-
-		int code = httpURLConnection.getResponseCode();
-		if (code == HttpURLConnection.HTTP_OK) {
-			System.out.println("find the website");
-			InputStreamReader inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream(),"UTF-8");
-
-			BufferedReader in = new BufferedReader(inputStreamReader);
-			String inputLine;
-			
-			while((inputLine=in.readLine())!=null){
-				
-				System.out.println(inputLine);
-				buffstr.append(inputLine);
-			}
-			in.close();
-			inputStreamReader.close();
-			
-		}else{
-			System.out.println("Can not grab a website");
-		}
-		return buffstr.toString();
+		Document html=Jsoup.connect(this.htmlUrl).get();
+		
+		return html.html();
 	}
 
 	public String getAnalizeMsg() {
@@ -160,5 +146,13 @@ public class GrabWebsiteUtil {
 
 	public void setCharSet(String charSet) {
 		this.charSet = charSet;
+	}
+
+	public List<String> getBaseUrls() {
+		return baseUrls;
+	}
+
+	public void setBaseUrls(List<String> baseUrls) {
+		this.baseUrls = baseUrls;
 	}
 }

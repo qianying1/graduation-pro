@@ -8,9 +8,6 @@
 <title>显示分析数据页</title>
 </head>
 <body>
-	<c:forEach items="${testMap }" var="map">
-		${map } <br/>
-	</c:forEach>
 	${webpage }
 </body>
 </html>
