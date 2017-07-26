@@ -15,14 +15,14 @@ import cn.qianying.graduation.dao.CommonDao;
 import cn.qianying.graduation.domain.Page;
 
 @Repository("commonDaoImpl")
-public class CommonDaoImpl implements CommonDao {
+public class CommonDaoImpl<T> implements CommonDao<T> {
 
 	@Resource(name = "sqlSessionFactory")
 	protected SqlSessionFactory sqlSessionFactory;
 
-	protected <T> String getStatement(Class<T> clazz, String prefix) {
-		String entityName = clazz.getSimpleName();
-		if (entityName.endsWith("Model")) {
+	protected String getStatement(Class<? extends Object> class1, String prefix) {
+		String entityName = class1.getSimpleName();
+		if (entityName.endsWith("Mapper")) {
 			entityName = entityName.substring(0, entityName.length() - 5);
 		}
 		entityName = prefix + entityName;
@@ -30,25 +30,25 @@ public class CommonDaoImpl implements CommonDao {
 	}
 
 	@Override
-	public <T extends Serializable> int save(T pojo) {
+	public int save(T pojo) {
 		String statement = getStatement(pojo.getClass(), "insert");
 		return sqlSessionFactory.openSession().insert(statement, pojo);
 	}
 
 	@Override
-	public <T extends Serializable> int deleteById(Class<T> clazz, Serializable id) {
+	public int deleteById(Class<T> clazz, Serializable id) {
 		String statement = getStatement(clazz, "idDelete");
 		return sqlSessionFactory.openSession().update(statement, id);
 	}
 
 	@Override
-	public <T extends Serializable> T getById(Class<T> clazz, Serializable id) {
+	public T getById(Class<T> clazz, Serializable id) {
 		String statement = getStatement(clazz, "idGet");
 		return sqlSessionFactory.openSession().selectOne(statement, id);
 	}
 
 	@Override
-	public <T extends Serializable> List<T> listAll(Class<T> clazz) {
+	public List<T> listAll(Class<T> clazz) {
 		String statement = getStatement(clazz, "list");
 		return sqlSessionFactory.openSession().selectList(statement);
 	}
@@ -90,7 +90,7 @@ public class CommonDaoImpl implements CommonDao {
 	}
 
 	@Override
-	public <T extends Serializable> int pageCount(Class<T> clazz, String[] attrs, Object[] values) {
+	public int pageCount(Class<T> clazz, String[] attrs, Object[] values) {
 		Map<String, Object> paraMap = new HashMap<String, Object>();
 
 		if (values != null && attrs != null) {
@@ -106,7 +106,7 @@ public class CommonDaoImpl implements CommonDao {
 	}
 
 	@Override
-	public <T extends Serializable> Page<T> pageSelect(Class<T> clazz, Page<T> p, String[] attrs, Object[] values) {
+	public Page<T> pageSelect(Class<T> clazz, Page<T> p, String[] attrs, Object[] values) {
 		int startNum = p.getStartIndex();
 		int pageSize = p.getPageSize();
 		String orderBy = genOrderStr(p.getSort(), p.getOrder());
@@ -133,7 +133,7 @@ public class CommonDaoImpl implements CommonDao {
 	}
 
 	@Override
-	public <T extends Serializable> int countAll(Class<T> clazz) {
+	public int countAll(Class<T> clazz) {
 		String statement = getStatement(clazz, "count");
 		Object o = sqlSessionFactory.openSession().selectOne(statement);
 		return Integer.parseInt(o.toString());

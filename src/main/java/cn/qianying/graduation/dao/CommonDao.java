@@ -6,14 +6,14 @@ import java.util.Map;
 
 import cn.qianying.graduation.domain.Page;  
   
-public interface CommonDao {  
+public interface CommonDao<T> {  
     /** 
      *  
      * 增加一个实体 
      * @param pojo 
      * @return 影响的行数 0失败，1成功 
      */  
-    public <T extends Serializable> int save(T pojo);  
+    public int save(T pojo);  
   
     /** 
      *  
@@ -23,7 +23,7 @@ public interface CommonDao {
      * @param id 
      * @return 
      */  
-    public <T extends Serializable> int deleteById(Class<T> clazz,  
+    public int deleteById(Class<T> clazz,  
             Serializable id);  
   
     /** 
@@ -34,7 +34,7 @@ public interface CommonDao {
      * @param id 
      * @return 
      */  
-    public <T extends Serializable> T getById(Class<T> clazz, Serializable id);  
+    public T getById(Class<T> clazz, Serializable id);  
   
     /** 
      *  
@@ -43,7 +43,7 @@ public interface CommonDao {
      * @param clazz 
      * @return 
      */  
-    public <T extends Serializable> List<T> listAll(Class<T> clazz);  
+    public List<T> listAll(Class<T> clazz);  
       
     /** 
      *  
@@ -53,7 +53,7 @@ public interface CommonDao {
      * @param p 
      * @return 
      */  
-    public <T extends Serializable> Page<T> pageSelect(Class<T> clazz,Page<T> p,String[]attrs,Object[]values);  
+    public Page<T> pageSelect(Class<T> clazz,Page<T> p,String[]attrs,Object[]values);  
       
       
     /** 
@@ -65,7 +65,7 @@ public interface CommonDao {
      * @param values 
      * @return 
      */  
-    public <T extends Serializable> int pageCount(Class<T> clazz,String[]attrs,Object[]values);  
+    public int pageCount(Class<T> clazz,String[]attrs,Object[]values);  
   
     /** 
      *  
@@ -74,7 +74,7 @@ public interface CommonDao {
      * @param clazz 
      * @return 
      */  
-    public <T extends Serializable> int countAll(Class<T> clazz);  
+    public int countAll(Class<T> clazz);  
   
     /** 
      *  

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import cn.qianying.graduation.dao.AnalizedMessageDao;
 import cn.qianying.graduation.domain.AnalizedMessage;
 @Repository("analizedMessageDaoImpl")
-public class AnalizedMessageDaoImpl implements AnalizedMessageDao {
+public class AnalizedMessageDaoImpl extends CommonDaoImpl<AnalizedMessage> implements AnalizedMessageDao {
 
 	@Override
 	public List<AnalizedMessage> listAll() {

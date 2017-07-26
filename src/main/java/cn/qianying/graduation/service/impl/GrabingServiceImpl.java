@@ -3,8 +3,6 @@ package cn.qianying.graduation.service.impl;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,9 +10,10 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.qianying.graduation.domain.AnalizedMessage;
 import cn.qianying.graduation.dao.AnalizedMessageDao;
 import cn.qianying.graduation.dao.GrabMessageDao;
+import cn.qianying.graduation.dao.PageContentDao;
+import cn.qianying.graduation.domain.AnalizedMessage;
 import cn.qianying.graduation.service.GrabingService;
 import cn.qianying.graduation.util.GrabWebsiteUtil;
 
@@ -25,6 +24,8 @@ public class GrabingServiceImpl implements GrabingService {
 	AnalizedMessageDao analizedMessageDaoImpl;
 	@Autowired
 	GrabMessageDao grabMessageDaoImpl;
+	@Autowired
+	PageContentDao pageContentDaoImpl;
 
 	@Override
 	public List<AnalizedMessage> listAll() {
@@ -66,7 +67,7 @@ public class GrabingServiceImpl implements GrabingService {
 		Element body=doc.body();
 		String docTxt=body.text();
 		
-		
+		pageContentDaoImpl.insert(docTxt);
 		
 		Elements ahrefEls=doc.select("a");
 		

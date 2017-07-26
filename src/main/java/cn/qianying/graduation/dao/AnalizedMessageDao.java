@@ -4,7 +4,7 @@ import java.util.List;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
 
-public interface AnalizedMessageDao {
+public interface AnalizedMessageDao extends CommonDao<AnalizedMessage>{
 
 public List<AnalizedMessage> listAll();
 	

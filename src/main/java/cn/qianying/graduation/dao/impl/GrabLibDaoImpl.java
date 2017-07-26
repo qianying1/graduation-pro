@@ -4,9 +4,10 @@ import org.springframework.stereotype.Repository;
 
 import cn.qianying.graduation.dao.GrabLibDao;
 import cn.qianying.graduation.domain.AnalizedMessage;
+import cn.qianying.graduation.domain.GrabLib;
 
 @Repository("grabLibDaoImpl")
-public class GrabLibDaoImpl implements GrabLibDao {
+public class GrabLibDaoImpl extends CommonDaoImpl<GrabLib> implements GrabLibDao {
 
 	@Override
 	public int addRecord(AnalizedMessage analizedMessage) {
