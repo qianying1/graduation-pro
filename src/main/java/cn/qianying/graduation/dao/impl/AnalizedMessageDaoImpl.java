@@ -2,9 +2,11 @@ package cn.qianying.graduation.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import cn.qianying.graduation.dao.AnalizedMessageDao;
 import cn.qianying.graduation.domain.AnalizedMessage;
-
+@Repository("analizedMessageDaoImpl")
 public class AnalizedMessageDaoImpl implements AnalizedMessageDao {
 
 	@Override

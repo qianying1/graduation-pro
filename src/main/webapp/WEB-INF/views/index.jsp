@@ -16,23 +16,10 @@
 		src="${pageContext.request.contextPath }/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 		function beginGrabing(basePath) {
-			/*var ajaxConfig = {
-				url : basePath + "/dispatcher/beginningGrab",
-				type : "POST",
-				dataType : "JSON",
-				data : null,
-				success : function(data) {
-					if (data == "success") {
-						alert("request success");
-					}
-				},
-				error : function() {
-					alert("request error");
-				},
-			};*/
 			$.ajax({
 				url : basePath + "/dispatcher/beginningGrab",
 				type : "POST",
+				asyn : true,
 				dataType : "text",
 				data : null,
 				success : function(data) {

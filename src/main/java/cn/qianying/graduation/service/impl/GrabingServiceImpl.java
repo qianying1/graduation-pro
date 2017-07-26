@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
@@ -20,29 +21,29 @@ import cn.qianying.graduation.util.GrabWebsiteUtil;
 @Service("grabingServiceImpl")
 public class GrabingServiceImpl implements GrabingService {
 
-	@Resource
-	AnalizedMessageDao analizedMessageMapper;
-	@Resource
-	GrabMessageDao grabMessageMapper;
+	@Autowired
+	AnalizedMessageDao analizedMessageDaoImpl;
+	@Autowired
+	GrabMessageDao grabMessageDaoImpl;
 
 	@Override
 	public List<AnalizedMessage> listAll() {
-		return analizedMessageMapper.listAll();
+		return analizedMessageDaoImpl.listAll();
 	}
 
 	@Override
 	public int addRecord(AnalizedMessage analizedMessage) {
-		return analizedMessageMapper.addRecord(analizedMessage);
+		return analizedMessageDaoImpl.addRecord(analizedMessage);
 	}
 
 	@Override
 	public int saveOrUpdate(AnalizedMessage analizedMessage) {
-		return analizedMessageMapper.saveOrUpdate(analizedMessage);
+		return analizedMessageDaoImpl.saveOrUpdate(analizedMessage);
 	}
 
 	@Override
 	public AnalizedMessage getDetail(String id) {
-		return analizedMessageMapper.getDetail(id);
+		return analizedMessageDaoImpl.getDetail(id);
 	}
 
 	@Override
@@ -53,7 +54,6 @@ public class GrabingServiceImpl implements GrabingService {
 		try {
 			webpageContent = grabWebsiteUtil.getWebpage();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return webpageContent;

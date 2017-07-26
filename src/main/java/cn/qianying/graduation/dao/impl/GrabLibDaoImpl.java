@@ -1,8 +1,11 @@
 package cn.qianying.graduation.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import cn.qianying.graduation.dao.GrabLibDao;
 import cn.qianying.graduation.domain.AnalizedMessage;
 
+@Repository("grabLibDaoImpl")
 public class GrabLibDaoImpl implements GrabLibDao {
 
 	@Override
