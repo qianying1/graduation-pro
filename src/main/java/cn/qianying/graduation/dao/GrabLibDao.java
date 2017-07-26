@@ -1,8 +1,8 @@
-package cn.qianying.graduation.mapper;
+package cn.qianying.graduation.dao;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
 
-public interface GrabMessageMapper {
+public interface GrabLibDao {
 
 	public int addRecord(AnalizedMessage analizedMessage);
 

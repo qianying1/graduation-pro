@@ -2,6 +2,7 @@ package cn.qianying.graduation.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
 
@@ -18,5 +19,6 @@ public interface GrabingService {
 	public AnalizedMessage getDetail(String id);
 
 	public void grabAWebPageAndGetMsg(String webName,String webUrl) throws IOException;
+
 
 }

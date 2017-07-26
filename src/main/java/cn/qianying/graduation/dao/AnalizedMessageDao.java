@@ -1,10 +1,10 @@
-package cn.qianying.graduation.mapper;
+package cn.qianying.graduation.dao;
 
 import java.util.List;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
 
-public interface AnalizedMessageMapper {
+public interface AnalizedMessageDao {
 
 public List<AnalizedMessage> listAll();
 	

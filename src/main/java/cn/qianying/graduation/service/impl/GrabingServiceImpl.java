@@ -12,8 +12,8 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import cn.qianying.graduation.domain.AnalizedMessage;
-import cn.qianying.graduation.mapper.AnalizedMessageMapper;
-import cn.qianying.graduation.mapper.GrabMessageMapper;
+import cn.qianying.graduation.dao.AnalizedMessageDao;
+import cn.qianying.graduation.dao.GrabMessageDao;
 import cn.qianying.graduation.service.GrabingService;
 import cn.qianying.graduation.util.GrabWebsiteUtil;
 
@@ -21,9 +21,9 @@ import cn.qianying.graduation.util.GrabWebsiteUtil;
 public class GrabingServiceImpl implements GrabingService {
 
 	@Resource
-	AnalizedMessageMapper analizedMessageMapper;
+	AnalizedMessageDao analizedMessageMapper;
 	@Resource
-	GrabMessageMapper grabMessageMapper;
+	GrabMessageDao grabMessageMapper;
 
 	@Override
 	public List<AnalizedMessage> listAll() {
@@ -64,12 +64,15 @@ public class GrabingServiceImpl implements GrabingService {
 		
 		Document doc=Jsoup.connect(webUrl).timeout(5000).get();
 		Element body=doc.body();
+		String docTxt=body.text();
+		
+		
 		
 		Elements ahrefEls=doc.select("a");
 		
 		for(Element ahrefEl:ahrefEls){
 			
-			System.out.println(ahrefEl.attr("abs:href"));
+			System.out.println(ahrefEl.attr("abs:href")+"\n"+ahrefEl.text());
 		}
 		
 	}
