@@ -3,7 +3,7 @@ package cn.qianying.graduation.domain;
 public class PageContent {
 
 	private Integer msgId;
-	private String content;
+	private String contentDir;
 
 	public PageContent() {
 		super();
@@ -17,12 +17,12 @@ public class PageContent {
 		this.msgId = msgId;
 	}
 
-	public String getContent() {
-		return content;
+	public String getContentDir() {
+		return contentDir;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setContentDir(String contentDir) {
+		this.contentDir = contentDir;
 	}
 
 }

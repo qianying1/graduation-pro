@@ -1,13 +1,12 @@
 package cn.qianying.graduation.dao;
 
-import cn.qianying.graduation.domain.AnalizedMessage;
+import java.util.List;
+
 import cn.qianying.graduation.domain.GrabLib;
 
 public interface GrabLibDao extends CommonDao<GrabLib>{
 
-	public int addRecord(AnalizedMessage analizedMessage);
+	public void insert(int contentId, String webName, String ahref, String flag);
 
-	public int saveOrUpdate(AnalizedMessage analizedMessage);
-
-	public AnalizedMessage getDetail(String id);
+	public void inserts(int contentId, String webName, List<String> ahrefList, String flag);
 }

@@ -4,6 +4,6 @@ import cn.qianying.graduation.domain.PageContent;
 
 public interface PageContentDao<T> extends CommonDao<PageContent>{
 
-	void insert(String docTxt);
+	int insert(String docTxt);
 
 }

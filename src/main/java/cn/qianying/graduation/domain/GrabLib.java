@@ -3,6 +3,7 @@ package cn.qianying.graduation.domain;
 public class GrabLib {
 
 	private Integer grabId;
+	private Integer contentId;
 	private String webName;
 	private String webSiteAddr;
 	private String grabSign;
@@ -51,6 +52,14 @@ public class GrabLib {
 
 	public void setAddTime(String addTime) {
 		this.addTime = addTime;
+	}
+
+	public Integer getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Integer contentId) {
+		this.contentId = contentId;
 	}
 
 }

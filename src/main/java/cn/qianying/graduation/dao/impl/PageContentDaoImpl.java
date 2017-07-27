@@ -9,11 +9,13 @@ import cn.qianying.graduation.domain.PageContent;
 public class PageContentDaoImpl extends CommonDaoImpl<PageContent> implements PageContentDao<PageContent> {
 
 	@Override
-	public void insert(String docTxt) {
+	public int insert(String docTxt) {
 		
 		PageContent pageContent=new PageContent();
-		pageContent.setContent(docTxt);
+		pageContent.setContentDir(docTxt);
 		save(pageContent);
+		
+		return pageContent.getMsgId();
 	}
 
 	

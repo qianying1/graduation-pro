@@ -32,6 +32,7 @@ public class CommonDaoImpl<T> implements CommonDao<T> {
 	@Override
 	public int save(T pojo) {
 		String statement = getStatement(pojo.getClass(), "insert");
+		System.out.println("=========="+statement+"===============");
 		return sqlSessionFactory.openSession().insert(statement, pojo);
 	}
 

@@ -6,12 +6,9 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +40,7 @@ public class DispatcherController {
 				try {
 					grabingWeb();
 				} catch (IOException e) {
-					Logger.getLogger(this.getClass()).log("IOException", null, e.getMessage(), e);
+//					Logger.getLogger(this.getClass()).log("IOException", null, e.getMessage(), e);
 				}
 			}
 		};

@@ -10,4 +10,5 @@ public interface GrabMessageDao extends CommonDao<GrabMessage>{
 	public int saveOrUpdate(AnalizedMessage analizedMessage);
 
 	public AnalizedMessage getDetail(String id);
+	
 }
