@@ -18,31 +18,11 @@
 		values
 		<foreach collection="list" item="item" index="index"
 			separator=",">
-			(#{item.contentId,jdbcType=BIGINT},#{item.webName,jdbcType=VARCHAR},#{item.webSiteAddr,jdbcType=VARCHAR},#{item.grabSign,jdbcType=VARCHAR},date_format(Now(),'%Y%m%d:%H-%i-%s'))
+			(#{item.contentId,jdbcType=BIGINT},#{item.webName,jdbcType=VARCHAR},#{item.webSiteAddr,jdbcType=VARCHAR},#{item.grabSign,jdbcType=VARCHAR},date_format(Now(),'%Y%m%d %H-%i-%s'))
 		</foreach>
 	</insert>
-	<select id="listAll" resultType="cn.qianying.graduation.domain.GrabLib">
-		select * from
-		tb_analized_message
-	</select>
-
-	<insert id="addRecord" parameterType="cn.qianying.graduation.domain.GrabLib">
-		insert into
-		tb_analized_message
-		values(date_format(Now(),'%Y%m%d%H%i%s'),#{username,jdbcType=CHAR},#{age,jdbcType=CHAR},#{gender,jdbcType=CHAR});
-	</insert>
-
-	<insert id="saveOrUpdate" parameterType="cn.qianying.graduation.domain.GrabLib">
-		insert into
-		tb_analized_message(id,username,age,gender)
-		values(#{id,jdbcType=CHAR},#{username,jdbcType=CHAR},#{age,jdbcType=CHAR},date_format(Now(),'%Y%m%d%H%i%s'))
-		ON DUPLICATE KEY UPDATE
-		username=#{username,jdbcType=CHAR},age=#{age,jdbcType=CHAR},gender=date_format(Now(),'%Y%m%d%H%i%s');
-	</insert>
-
-	<select id='getDetail' resultType='cn.qianying.graduation.domain.GrabLib'
-		parameterType="java.lang.String">
-		select userName,age,gender from tb_analized_message
-		where id=#{id,jdbcType=VARCHAR};
+	
+	<select id="selectGrabLib" parameterType="java.lang.String" resultType="java.lang.String">
+		select web_name from tb_grab_lib where web_site_addr=#{url,jdbcType=VARCHAR} AND grab_sign='Y'
 	</select>
 </mapper>

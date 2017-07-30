@@ -3,6 +3,7 @@ package cn.qianying.graduation.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import cn.qianying.graduation.dao.GrabLibDao;
@@ -38,6 +39,7 @@ public class GrabLibDaoImpl extends CommonDaoImpl<GrabLib> implements GrabLibDao
 			grabLib.setWebSiteAddr(url);
 			grabLib.setGrabSign(flag);
 			grabLibs.add(grabLib);
+			// System.out.println("contentId==="+contentId+"====webName======"+webName+"===url==="+url+"====flag==="+flag);
 		}
 		sqlSessionFactory.openSession().insert("insertGrabLibs", grabLibs);
 	}
@@ -52,6 +54,23 @@ public class GrabLibDaoImpl extends CommonDaoImpl<GrabLib> implements GrabLibDao
 			}
 		}
 		return urls;
+	}
+
+	@Override
+	public boolean isGrabed(String url) {
+		
+		if(null==url||"".equals(url)){
+			return true;
+		}
+		SqlSession session=sqlSessionFactory.openSession();
+		String webName=session.selectOne("selectGrabLib", url);
+		session.commit();
+		session.close();
+		if(null!=webName&&!"".equals(webName)){
+			
+			return true;
+		}
+		return false;
 	}
 
 }

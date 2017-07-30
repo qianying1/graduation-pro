@@ -72,7 +72,7 @@ public class DispatcherController {
 
 			String webName = (String) webName1;
 			String webUrl = properties.getProperty(webName);
-			grabingServiceImpl.grabAWebPageAndGetMsg(webName, webUrl);
+			grabingServiceImpl.grabWeb(webName, webUrl);
 		}
 	}
 	

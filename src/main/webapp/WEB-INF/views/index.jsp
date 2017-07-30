@@ -23,13 +23,18 @@
 				dataType : "text",
 				data : null,
 				success : function(data) {
-					if (data == "success") {
-						alert("开始抓取网络数据");
+					if (data != "success") {
+						alert("抓取网页数据请求失败");
+					}else{
+	alert("完成网页数据的抓取");
 					}
 				},
 				error : function() {
 					alert("请求出错!");
 				},
+				beforeSend:function(){
+					alert("开始抓取网络数据");
+				}
 			});
 		}
 	</script>
