@@ -21,6 +21,8 @@ import cn.qianying.graduation.dao.GrabLibDao;
 import cn.qianying.graduation.dao.GrabMessageDao;
 import cn.qianying.graduation.dao.PageContentDao;
 import cn.qianying.graduation.service.GrabingService;
+import cn.qianying.graduation.support.GrabingWeb;
+import cn.qianying.graduation.support.WebGraph;
 import cn.qianying.graduation.util.GrabWebsiteUtil;
 
 @Service("grabingServiceImpl")
@@ -77,7 +79,7 @@ public class GrabingServiceImpl implements GrabingService {
 	}
 
 	@Override
-	public void grabWeb(String webName, String webUrl) throws IOException {
+	public int grabWeb(String webName, String webUrl) throws IOException {
 
 		// 通过url种子获取单个首页
 		Document doc = null;
@@ -86,8 +88,8 @@ public class GrabingServiceImpl implements GrabingService {
 		} catch (IOException e) {
 
 			// 等待链接超时处理
-			System.out.println("===========请求超时处理========");
-			return;
+			System.out.println("===========请求超时处理========" + webName + " " + webUrl + e.getMessage());
+			return 1;
 		}
 		String docTxt = doc.html();
 		Element titleEl = doc.select("title").first();
@@ -120,7 +122,75 @@ public class GrabingServiceImpl implements GrabingService {
 			// System.out.println(ahrefEl.attr("abs:href") + "\n" +
 			// ahrefEl.text());
 		}
+		return 0;
+	}
 
+	@Override
+	public void grabWebInBF(List<GrabingWeb> grabingWebs) {
+
+		List<WebGraph> webGraphs = new ArrayList<WebGraph>();
+		for (GrabingWeb grabingWeb : grabingWebs) {
+
+			// 通过url种子获取单个首页
+			Document doc = null;
+			try {
+				doc = Jsoup.connect(grabingWeb.getUrl()).timeout(600000).get();
+			} catch (IOException e) {
+
+				// 等待链接超时处理
+				System.out.println("===========请求超时处理========" + grabingWeb.getWebName() + " " + grabingWeb.getUrl()
+						+ e.getMessage());
+				return;
+			}
+
+			String docTxt = doc.html();
+			Element titleEl = doc.select("title").first();
+			String title = null;
+			if (titleEl != null)
+				title = titleEl.text();
+			else
+				title = "";
+
+			if (!(null == grabingWeb.getUrl() || "".equals(grabingWeb.getUrl()) || isGrabed(grabingWeb.getUrl()))) {
+
+				String pageTitle = null;
+				try {
+					pageTitle = writeHtmlDoc(title, grabingWeb.getWebName(), docTxt);
+				} catch (IOException e) {
+
+					e.printStackTrace();
+				}
+				int contentId = pageContentDaoImpl.insert(pageTitle);
+				grabLibDaoImpl.insert(contentId, grabingWeb.getWebName(), grabingWeb.getUrl(), "Y");
+			}
+			
+			// 抓取页面的urls
+			Elements ahrefEls = doc.select("a");
+
+			List<GrabingWeb> grabingWebs2=new ArrayList<GrabingWeb>();
+			for (Element ahrefEl : ahrefEls) {
+
+				String url = ahrefEl.attr("abs:href");
+				// 判断是否为重复的url
+				if (null == url || "".equals(url) || isGrabed(url)) {
+
+					continue;
+				}
+				GrabingWeb gWeb=new GrabingWeb(grabingWeb.getWebName(), url);
+				grabingWebs2.add(gWeb);
+			}
+			WebGraph webGraph=new WebGraph(grabingWebs2);
+			webGraphs.add(webGraph);
+		}
+		grabingWeb(webGraphs);
+	}
+
+	private void grabingWeb(List<WebGraph> webGraphs) {
+
+		for(WebGraph webGraph:webGraphs){
+			
+			
+		}
 	}
 
 	private boolean isGrabed(String url) {
@@ -133,10 +203,12 @@ public class GrabingServiceImpl implements GrabingService {
 
 	private String writeHtmlDoc(String pageTitle, String webName, String htmlTxt) throws IOException {
 
-		Calendar now = Calendar.getInstance();  
-		String writeTime=String.valueOf(now.get(Calendar.YEAR))+String.valueOf((now.get(Calendar.MONTH) + 1))+String.valueOf(now.get(Calendar.DAY_OF_MONTH));
-		
-		File htmlFile = new File(htmlFileSaveBase + webName + File.separator + writeTime+File.separator+pageTitle + ".html");
+		Calendar now = Calendar.getInstance();
+		String writeTime = String.valueOf(now.get(Calendar.YEAR)) + String.valueOf((now.get(Calendar.MONTH) + 1))
+				+ String.valueOf(now.get(Calendar.DAY_OF_MONTH));
+
+		File htmlFile = new File(
+				htmlFileSaveBase + webName + File.separator + writeTime + File.separator + pageTitle + ".html");
 		if (!htmlFile.getParentFile().exists()) {
 			htmlFile.getParentFile().mkdirs();
 		}
@@ -147,7 +219,8 @@ public class GrabingServiceImpl implements GrabingService {
 		while (htmlFile.exists()) {
 
 			pageTitle = pageTitle + ext;
-			htmlFile = new File(htmlFileSaveBase + webName + File.separator + writeTime+File.separator+pageTitle + ".html");
+			htmlFile = new File(
+					htmlFileSaveBase + webName + File.separator + writeTime + File.separator + pageTitle + ".html");
 		}
 		htmlFile.createNewFile();
 

@@ -3,6 +3,8 @@ package cn.qianying.graduation.web.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.qianying.graduation.service.GrabingService;
+import cn.qianying.graduation.support.GrabingWeb;
 import cn.qianying.graduation.util.PageMapper;
 
 @RequestMapping(value = "/dispatcher")
@@ -38,7 +41,8 @@ public class DispatcherController {
 			@Override
 			public void run() {
 				try {
-					grabingWeb();
+//					grabingWeb();
+					beginGrabingWeb();
 				} catch (IOException e) {
 //					Logger.getLogger(this.getClass()).log("IOException", null, e.getMessage(), e);
 				}
@@ -59,7 +63,7 @@ public class DispatcherController {
 //		return PageMapper.INDEX;
 	}
 	
-	private void grabingWeb() throws IOException{
+	private void beginGrabingWeb() throws IOException{
 		
 		Properties properties = new Properties();
 		InputStream in = this.getClass().getResourceAsStream(webSiteResource);
@@ -67,13 +71,38 @@ public class DispatcherController {
 		properties.load(in);
 		Set<String> webs = properties.stringPropertyNames();
 		Object[] webStrs = webs.toArray();
+		List<GrabingWeb> grabingWebs=new ArrayList<GrabingWeb>();
 		
 		for (Object webName1 : webStrs) {
 
 			String webName = (String) webName1;
 			String webUrl = properties.getProperty(webName);
-			grabingServiceImpl.grabWeb(webName, webUrl);
+			GrabingWeb grabingWeb=new GrabingWeb(webName, webUrl);
+			
+			grabingWebs.add(grabingWeb);
 		}
+		grabingServiceImpl.grabWebInBF(grabingWebs);
 	}
+	
+//	private void grabingWeb() throws IOException{
+//		
+//		Properties properties = new Properties();
+//		InputStream in = this.getClass().getResourceAsStream(webSiteResource);
+//
+//		properties.load(in);
+//		Set<String> webs = properties.stringPropertyNames();
+//		Object[] webStrs = webs.toArray();
+//		
+//		for (Object webName1 : webStrs) {
+//
+//			String webName = (String) webName1;
+//			String webUrl = properties.getProperty(webName);
+//			int flag=grabingServiceImpl.grabWeb(webName, webUrl);
+//			if(flag==1){
+//				continue;
+//			}
+//			System.out.println("======webName=========="+webName1);
+//		}
+//	}
 	
 }
