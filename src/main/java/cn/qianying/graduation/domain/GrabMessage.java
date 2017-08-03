@@ -5,8 +5,8 @@ public class GrabMessage {
 	private Integer msgId;
 	private String videoName; // 视频名称
 	private String playCount; // 视频播放次数
-	private String likeCount; // 收藏数
-	private String commentCount; // 评论数
+	private Integer likeCount; // 收藏数
+	private Integer commentCount; // 评论数
 	private Integer barrage; // 弹幕数
 	private Integer bananaCount; // 投蕉数
 	private String videoAddTime; // 视频发布时间
@@ -40,22 +40,6 @@ public class GrabMessage {
 
 	public void setPlayCount(String playCount) {
 		this.playCount = playCount;
-	}
-
-	public String getLikeCount() {
-		return likeCount;
-	}
-
-	public void setLikeCount(String likeCount) {
-		this.likeCount = likeCount;
-	}
-
-	public String getCommentCount() {
-		return commentCount;
-	}
-
-	public void setCommentCount(String commentCount) {
-		this.commentCount = commentCount;
 	}
 
 	public Integer getBarrage() {
@@ -96,6 +80,22 @@ public class GrabMessage {
 
 	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
+	}
+
+	public Integer getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(Integer likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
 	}
 
 }

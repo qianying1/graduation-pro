@@ -9,12 +9,22 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cn.qianying.graduation.dao.GrabMessageDao;
+import cn.qianying.graduation.dao.VideoAuthorDao;
+import cn.qianying.graduation.domain.GrabMessage;
+import cn.qianying.graduation.domain.VideoAuthor;
 import cn.qianying.graduation.support.AcfunSupport;
 
 @Component("acfunSupportImpl")
 public class AcfunSupportImpl extends CommonSupportImpl implements AcfunSupport {
+
+	@Autowired
+	GrabMessageDao grabMessageDaoImpl;
+	@Autowired
+	VideoAuthorDao videoAuthorDaoImpl;
 
 	@Override
 	public List<String> analizeHeader(Element header) {
@@ -92,7 +102,6 @@ public class AcfunSupportImpl extends CommonSupportImpl implements AcfunSupport 
 		try {
 			document = connection.get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -127,13 +136,62 @@ public class AcfunSupportImpl extends CommonSupportImpl implements AcfunSupport 
 			String authorPic = userDiv.select("div.user").first().select("a").first().select("img").first().attr("src");
 			String authorName = userDiv.select("div.user").first().getElementById("bd_upname").select("div.title")
 					.first().text();
-			
-			
+
+			int authorId = analizeVideoAuthorPage(signature, authorName, authorPageUrl, authorPic);
+			if(authorId!=-1){
+				
+				GrabMessage grabMessage = new GrabMessage();
+				grabMessage.setVideoName(title);
+				grabMessage.setPlayCount(viewCount);
+				grabMessage.setLikeCount(likeCount);
+				grabMessage.setCommentCount(commentCount);
+				grabMessage.setBarrage(danmu);
+				grabMessage.setBananaCount(bananaCount);
+				grabMessage.setVideoAddTime(releaseTime);
+				grabMessage.setAuthorId(authorId);
+				grabMessage.setVideoType(videoType);
+
+				grabMessageDaoImpl.save(grabMessage);
+			}else{
+				
+				System.out.println("插入视频信息 "+title+" 失败!");
+			}
 		}
 	}
 
-	private void authorPageAnalize(String url) {
+	private int analizeVideoAuthorPage(String signature, String authorName, String authorPageUrl, String authorPic) {
 
+		Connection connection = Jsoup.connect(authorPageUrl).ignoreContentType(true).userAgent(
+				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2906.0 Safari/537.36");
+		Document document = null;
+		try {
+			document = connection.get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (document != null) {
+
+			Element mainEl = document.getElementById("main");
+			Element informationEl = mainEl.select("section.headup.wp").first().getElementById("anchorMes")
+					.select("div.information").first().select("div.mesL.fl").first().select("div.clearfix").first();
+			int attentionCount = Integer.valueOf(informationEl.select("div.fl.follow").first().text());
+			int audienceCount = Integer.valueOf(informationEl.select("div.fl.fans").first().text());
+			int videoCount = Integer.valueOf(mainEl.select("div.contentup.wp").first().select("div.contentlist").first()
+					.select("div.table.clearfix").first().select("a").first().select("span").first().text());
+			
+			VideoAuthor videoAuthor=new VideoAuthor();
+			videoAuthor.setSignature(signature);
+			videoAuthor.setVideoCount(videoCount);
+			videoAuthor.setAttentionCount(attentionCount);
+			videoAuthor.setAudienceCount(audienceCount);
+			videoAuthor.setAuthorPageUrl(authorPageUrl);
+			videoAuthor.setAuthorPic(authorPic);
+			videoAuthor.setAuthorName(authorName);
+			
+			return videoAuthorDaoImpl.insert(videoAuthor);
+		}
+		return -1;
 	}
 
 }
