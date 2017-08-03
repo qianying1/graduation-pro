@@ -1,4 +1,4 @@
-package cn.qianying.graduation.support;
+package cn.qianying.graduation.domain;
 
 public class GrabingWeb {
 

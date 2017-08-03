@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -15,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.qianying.graduation.domain.GrabingWeb;
 import cn.qianying.graduation.service.GrabingService;
-import cn.qianying.graduation.support.GrabingWeb;
 import cn.qianying.graduation.util.PageMapper;
 
 @RequestMapping(value = "/dispatcher")
@@ -34,7 +33,7 @@ public class DispatcherController {
 	}
 
 	@RequestMapping(value = "/beginningGrab")
-	public void doGrabWebsites(Map<String, Object> params, HttpServletResponse response) throws IOException {
+	public void doGrabWebsites(HttpServletResponse response) throws IOException {
 
 		Runnable thread=new Runnable() {
 			

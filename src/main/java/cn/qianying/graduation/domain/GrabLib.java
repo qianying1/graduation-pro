@@ -3,8 +3,7 @@ package cn.qianying.graduation.domain;
 public class GrabLib {
 
 	private Integer grabId;
-	private Integer contentId;
-	private String webName;
+	private Integer websiteId;
 	private String webSiteAddr;
 	private String grabSign;
 	private String addTime;
@@ -20,14 +19,6 @@ public class GrabLib {
 
 	public void setGrabId(Integer grabId) {
 		this.grabId = grabId;
-	}
-
-	public String getWebName() {
-		return webName;
-	}
-
-	public void setWebName(String webName) {
-		this.webName = webName;
 	}
 
 	public String getWebSiteAddr() {
@@ -54,12 +45,12 @@ public class GrabLib {
 		this.addTime = addTime;
 	}
 
-	public Integer getContentId() {
-		return contentId;
+	public Integer getWebsiteId() {
+		return websiteId;
 	}
 
-	public void setContentId(Integer contentId) {
-		this.contentId = contentId;
+	public void setWebsiteId(Integer websiteId) {
+		this.websiteId = websiteId;
 	}
 
 }

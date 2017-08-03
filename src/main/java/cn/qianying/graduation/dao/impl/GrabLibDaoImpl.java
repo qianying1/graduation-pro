@@ -16,8 +16,8 @@ public class GrabLibDaoImpl extends CommonDaoImpl<GrabLib> implements GrabLibDao
 	public void insert(int contentId, String webName, String webUrl, String flag) {
 
 		GrabLib grabLib = new GrabLib();
-		grabLib.setContentId(contentId);
-		grabLib.setWebName(webName);
+//		grabLib.setContentId(contentId);
+//		grabLib.setWebName(webName);
 		grabLib.setWebSiteAddr(webUrl);
 		grabLib.setGrabSign(flag);
 		save(grabLib);
@@ -34,8 +34,8 @@ public class GrabLibDaoImpl extends CommonDaoImpl<GrabLib> implements GrabLibDao
 				continue;
 			}
 			GrabLib grabLib = new GrabLib();
-			grabLib.setContentId(contentId);
-			grabLib.setWebName(webName);
+//			grabLib.setContentId(contentId);
+//			grabLib.setWebName(webName);
 			grabLib.setWebSiteAddr(url);
 			grabLib.setGrabSign(flag);
 			grabLibs.add(grabLib);

@@ -16,181 +16,75 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.qianying.graduation.dao.AnalizedMessageDao;
 import cn.qianying.graduation.dao.GrabLibDao;
-import cn.qianying.graduation.dao.GrabMessageDao;
-import cn.qianying.graduation.dao.PageContentDao;
+import cn.qianying.graduation.domain.GrabingWeb;
 import cn.qianying.graduation.service.GrabingService;
-import cn.qianying.graduation.support.GrabingWeb;
-import cn.qianying.graduation.support.WebGraph;
-import cn.qianying.graduation.util.GrabWebsiteUtil;
 
 @Service("grabingServiceImpl")
 public class GrabingServiceImpl implements GrabingService {
 
 	private String htmlFileSaveBase = "grabedWebPages/";
 	@Autowired
-	private AnalizedMessageDao analizedMessageDaoImpl;
-	@Autowired
 	private GrabLibDao grabLibDaoImpl;
-	@Autowired
-	private GrabMessageDao grabMessageDaoImpl;
-	@Autowired
-	private PageContentDao pageContentDaoImpl;
 
 	@Override
-	public String grabAWebPage(String url) {
+	public void grabWebInBF(List<GrabingWeb> grabingWebs) throws IOException {
 
-		String webpageContent = null;
-		GrabWebsiteUtil grabWebsiteUtil = new GrabWebsiteUtil(url);
-		try {
-			webpageContent = grabWebsiteUtil.getWebpage();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return webpageContent;
-	}
-
-	@Override
-	public void grabAWebPageAndGetMsg(String webName, String webUrl) throws IOException {
-
-		Document doc = Jsoup.connect(webUrl).timeout(600000).get();
-		String docTxt = doc.html();
-
-		String title = doc.select("title").first().text();
-		String pageTitle = writeHtmlDoc(title, webName, docTxt);
-		int contentId = pageContentDaoImpl.insert(pageTitle);
-
-		grabLibDaoImpl.insert(contentId, webName, webUrl, "Y");
-
-		Elements ahrefEls = doc.select("a");
-
-		List<String> ahrefList = new ArrayList<String>();
-		for (Element ahrefEl : ahrefEls) {
-
-			ahrefList.add(ahrefEl.attr("abs:href"));
-
-			System.out.println(ahrefEl.attr("abs:href") + "\n" + ahrefEl.text());
-		}
-
-		if (ahrefList.size() > 0)
-			grabLibDaoImpl.inserts(-1, webName, ahrefList, "N");
-
-	}
-
-	@Override
-	public int grabWeb(String webName, String webUrl) throws IOException {
-
-		// 通过url种子获取单个首页
-		Document doc = null;
-		try {
-			doc = Jsoup.connect(webUrl).timeout(600000).get();
-		} catch (IOException e) {
-
-			// 等待链接超时处理
-			System.out.println("===========请求超时处理========" + webName + " " + webUrl + e.getMessage());
-			return 1;
-		}
-		String docTxt = doc.html();
-		Element titleEl = doc.select("title").first();
-		String title = null;
-		if (titleEl != null)
-			title = titleEl.text();
-		else
-			title = "";
-
-		if (!(null == webUrl || "".equals(webUrl) || isGrabed(webUrl))) {
-
-			String pageTitle = writeHtmlDoc(title, webName, docTxt);
-			int contentId = pageContentDaoImpl.insert(pageTitle);
-			grabLibDaoImpl.insert(contentId, webName, webUrl, "Y");
-		}
-
-		// 抓取页面的urls
-		Elements ahrefEls = doc.select("a");
-
-		for (Element ahrefEl : ahrefEls) {
-
-			String url = ahrefEl.attr("abs:href");
-			// 判断是否为重复的url
-			if (null == url || "".equals(url) || isGrabed(url)) {
-
-				continue;
-			}
-			// System.out.println("===========url============"+url);
-			grabWeb(webName, url);
-			// System.out.println(ahrefEl.attr("abs:href") + "\n" +
-			// ahrefEl.text());
-		}
-		return 0;
-	}
-
-	@Override
-	public void grabWebInBF(List<GrabingWeb> grabingWebs) {
-
-		List<WebGraph> webGraphs = new ArrayList<WebGraph>();
-		for (GrabingWeb grabingWeb : grabingWebs) {
-
-			// 通过url种子获取单个首页
-			Document doc = null;
-			try {
-				doc = Jsoup.connect(grabingWeb.getUrl()).timeout(600000).get();
-			} catch (IOException e) {
-
-				// 等待链接超时处理
-				System.out.println("===========请求超时处理========" + grabingWeb.getWebName() + " " + grabingWeb.getUrl()
-						+ e.getMessage());
-				return;
-			}
-
-			String docTxt = doc.html();
-			Element titleEl = doc.select("title").first();
-			String title = null;
-			if (titleEl != null)
-				title = titleEl.text();
-			else
-				title = "";
-
-			if (!(null == grabingWeb.getUrl() || "".equals(grabingWeb.getUrl()) || isGrabed(grabingWeb.getUrl()))) {
-
-				String pageTitle = null;
-				try {
-					pageTitle = writeHtmlDoc(title, grabingWeb.getWebName(), docTxt);
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
-				int contentId = pageContentDaoImpl.insert(pageTitle);
-				grabLibDaoImpl.insert(contentId, grabingWeb.getWebName(), grabingWeb.getUrl(), "Y");
-			}
-			
-			// 抓取页面的urls
-			Elements ahrefEls = doc.select("a");
-
-			List<GrabingWeb> grabingWebs2=new ArrayList<GrabingWeb>();
-			for (Element ahrefEl : ahrefEls) {
-
-				String url = ahrefEl.attr("abs:href");
-				// 判断是否为重复的url
-				if (null == url || "".equals(url) || isGrabed(url)) {
-
-					continue;
-				}
-				GrabingWeb gWeb=new GrabingWeb(grabingWeb.getWebName(), url);
-				grabingWebs2.add(gWeb);
-			}
-			WebGraph webGraph=new WebGraph(grabingWebs2);
-			webGraphs.add(webGraph);
-		}
-		grabingWeb(webGraphs);
-	}
-
-	private void grabingWeb(List<WebGraph> webGraphs) {
-
-		for(WebGraph webGraph:webGraphs){
-			
-			
-		}
+//		List<GrabingWeb> grabingWebs2 = new ArrayList<>();
+//		String name = null;
+//		for (GrabingWeb grabingWeb : grabingWebs) {
+//
+//			String webName = grabingWeb.getWebName();
+//			String webUrl = grabingWeb.getUrl();
+//			Document doc = null;
+//			try {
+//				doc = Jsoup.connect(webUrl).ignoreContentType(true)
+//						.userAgent(
+//								"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31")
+//						.timeout(600000).get();
+//			} catch (IOException e) {
+//
+//				// 等待链接超时处理
+//				System.out.println("===========请求超时处理========" + webName + " " + webUrl + e.getMessage());
+//				// return;
+//				continue;
+//			}
+//
+//			String docTxt = doc.html();
+//			Element titleEl = doc.select("title").first();
+//			String title = null;
+//			if (titleEl != null)
+//				title = titleEl.text();
+//			else
+//				title = "";
+//
+//			if (null != webUrl && !"".equals(webUrl) && !isGrabed(webUrl)) {
+//
+//				String pageTitle = writeHtmlDoc(title, webName, docTxt);
+//				int contentId = pageContentDaoImpl.insert(pageTitle);
+//				name = webName;
+//				grabLibDaoImpl.insert(contentId, webName, webUrl, "Y");
+//			}
+//
+//			// 抓取页面的urls
+//			Elements ahrefEls = doc.select("a");
+//
+//			for (Element ahrefEl : ahrefEls) {
+//
+//				String url = ahrefEl.attr("abs:href");
+//				// 判断是否为重复的url
+//				if (null == url || "".equals(url) || isGrabed(url)) {
+//
+//					continue;
+//				}
+//				GrabingWeb grabingWeb2 = new GrabingWeb(webName, url);
+//				grabingWebs2.add(grabingWeb2);
+//			}
+//			System.out.println("======web==" + webName + "====number===" + ahrefEls.size() + "==");
+//
+//		}
+//		System.out.println("====================next==========" + name);
+//		grabWebInBF(grabingWebs2);
 	}
 
 	private boolean isGrabed(String url) {

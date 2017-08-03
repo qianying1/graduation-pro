@@ -49,6 +49,7 @@
 		<cglib.version>3.1</cglib.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<jsoup.version>1.7.2</jsoup.version>
+		<htmlunit.version>2.27</htmlunit.version>
 	</properties>
 
 	<build>
@@ -266,22 +267,26 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectjweaver.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
-		</dependency>
+		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
+			<version>${dom4j.version}</version> </dependency> -->
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0.version}</version>
 		</dependency>
-		
+
+		<!-- htmlunit以来库 -->
+		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<version>${htmlunit.version}</version>
+		</dependency>
 		<!-- jsoup依赖库 -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>${jsoup.version}</version>
 		</dependency>
+
 	</dependencies>
 </project>
